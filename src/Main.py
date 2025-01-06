@@ -43,11 +43,9 @@ if __name__ == "__main__":
         # Mostra o menu para o jogador atual
         print(f"Vez do jogador {clientes[user_actual].name}")
         print("Cartas mágicas disponíveis:")
-        # Testando as cartas mágicas
-        for i, player_cards in enumerate(magic_cards):
-            print(f"\nJogador {i+1} - Cartas Mágicas:")
-            for card in player_cards:
-                print(f"{card.get_name()} bloqueia {', '.join([atk.name for atk in card.blocked_attacks])}")
+        for i, magic in enumerate(magic_cards[user_actual]):
+            print(f"{i} - {magic.get_name()}")
+        print(f"{len(magic_cards[user_actual])} - Não usar magia")
         magia_op = int(input("> "))
 
         magia_selecionada = None
