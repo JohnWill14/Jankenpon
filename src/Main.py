@@ -1,13 +1,7 @@
 from src.Client import Client, show_menu
-from src.util.soUtil import clear
-from src.util.RandomUtils import get_random_cards
 from src.model.Magic import Magic
 from src.model.Attack import Attack
 import random
-
-
-def get_cards():
-    return get_random_cards(25)
 
 # Função para criar cartas mágicas aleatórias
 def generate_random_magic_cards(num_cards):

@@ -6,7 +6,7 @@ import "google/protobuf/empty.proto";
 service GameService {
   rpc sayHello (google.protobuf.Empty) returns (StringRequest);
   rpc cadastrarCliente (StringRequest) returns (ClienteResponse);
-  rpc acessarSala (StringRequest) returns (SalaResponse);
+  rpc acessarSala (SalaRequest) returns (SalaResponse);
   rpc verMao (google.protobuf.Empty) returns (cartasResponse);
   rpc pegarCartaDeck (google.protobuf.Empty) returns (cartasResponse);
   rpc desistirJogo (google.protobuf.Empty) returns (boolResponse);
@@ -17,8 +17,16 @@ message StringRequest {
   string string = 1;
 }
 
+message SalaRequest {
+  string token = 1;
+  string name = 2;
+}
+
+
 message SalaResponse {
   bool finalizada = 1;
+  string message = 2;
+  bool erro = 3;
 }
 
 message cartasResponse {
