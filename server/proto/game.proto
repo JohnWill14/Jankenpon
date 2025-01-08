@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+
+service GameService {
+  rpc sayHello (google.protobuf.Empty) returns (StringRequest);
+  rpc cadastrarCliente (StringRequest) returns (ClienteResponse);
+  rpc acessarSala (StringRequest) returns (SalaResponse);
+  rpc verMao (google.protobuf.Empty) returns (cartasResponse);
+  rpc pegarCartaDeck (google.protobuf.Empty) returns (cartasResponse);
+  rpc desistirJogo (google.protobuf.Empty) returns (boolResponse);
+}
+
+
+message StringRequest {
+  string string = 1;
+}
+
+message SalaResponse {
+  bool finalizada = 1;
+}
+
+message cartasResponse {
+  repeated string cartas = 1;
+}
+
+message ClienteResponse {
+  string name = 1;
+  string chave = 2;
+}
+
+message boolResponse{
+  bool resp = 1;
+}
