@@ -1,5 +1,4 @@
 from concurrent import futures
-from weakref import finalize
 
 import grpc
 import proto.game_pb2_grpc as game_pb2_grpc
@@ -7,7 +6,7 @@ import  proto.game_pb2 as game_pb2
 import logging
 import secrets
 
-from cliente.cliente import Cliente
+from game.cliente.cliente import Cliente
 
 logging.basicConfig(
     level=logging.INFO,
@@ -16,9 +15,10 @@ logging.basicConfig(
 )
 
 class gameSettins():
-    def __init__(self):
+    def __init__(self, cards_total = 20):
         self.clients = []
         self.rooms = {}
+        self.cards_total = cards_total
 
     def find_user_by_token(self, token):
         for cliente in self.clients:
@@ -53,6 +53,31 @@ class gameSettins():
 
         logging.info(f"add client in {name} room")
 
+    def verMao(self, token):
+        c = self.find_user_by_token(token)
+        if c == None:
+            raise ValueError("User not found")
+        logging.info(f"Cliente {c.nome} viu sua mao")
+        return c.top_deck
+
+    def getCarta(self, token):
+        c = self.find_user_by_token(token)
+        if c == None:
+            raise ValueError("User not found")
+        c.get_card()
+        logging.info(f"Cliente {c.nome} pegou uma nova carta do jogo")
+        return self.verMao(token)
+
+    def desistirJogo(self, token):
+        c = self.find_user_by_token(token)
+        if c == None:
+            raise ValueError("User not found")
+        self.clients.remove(c)
+        for chave, lista in self.rooms.items():
+            if c in lista:
+                lista.remove(c)
+                break
+        logging.info(f"Cliente {c.nome} desistiu do jogo")
 
 class GameServiceServicer(game_pb2_grpc.GameServiceServicer):
     def __init__(self, gameSettins):
@@ -81,6 +106,20 @@ class GameServiceServicer(game_pb2_grpc.GameServiceServicer):
 
         return game_pb2.SalaResponse(finalizada=completed, message = message, erro=False)
 
+    def verMao(self, request, context):
+            cards = self.game.verMao(request.string)
+            return game_pb2.CartasResponse(cartas=[str(card) for card in cards])
+
+    def pegarCartaDeck(self, request, context):
+            cards = self.game.getCarta(request.string)
+            return game_pb2.CartasResponse(cartas=[str(card) for card in cards])
+
+    def desistirJogo(self, request, context):
+        try:
+            self.game.desistirJogo(request.string)
+        except Exception as e:
+            return game_pb2.boolResponse(resp=False)
+        return game_pb2.boolResponse(resp=True)
 
 
 def serve(game):

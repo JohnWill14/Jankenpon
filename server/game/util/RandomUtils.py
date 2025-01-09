@@ -1,7 +1,7 @@
 import random
 
-from src.model.Attack import Attack
-from src.model.Card import Card
+from game.model.Attack import Attack
+from game.model.Card import Card
 
 
 def get_next_atak():

@@ -52,17 +52,17 @@ class GameServiceStub(object):
                 _registered_method=True)
         self.verMao = channel.unary_unary(
                 '/GameService/verMao',
-                request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-                response_deserializer=proto_dot_game__pb2.cartasResponse.FromString,
+                request_serializer=proto_dot_game__pb2.StringRequest.SerializeToString,
+                response_deserializer=proto_dot_game__pb2.CartasResponse.FromString,
                 _registered_method=True)
         self.pegarCartaDeck = channel.unary_unary(
                 '/GameService/pegarCartaDeck',
-                request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-                response_deserializer=proto_dot_game__pb2.cartasResponse.FromString,
+                request_serializer=proto_dot_game__pb2.StringRequest.SerializeToString,
+                response_deserializer=proto_dot_game__pb2.CartasResponse.FromString,
                 _registered_method=True)
         self.desistirJogo = channel.unary_unary(
                 '/GameService/desistirJogo',
-                request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+                request_serializer=proto_dot_game__pb2.StringRequest.SerializeToString,
                 response_deserializer=proto_dot_game__pb2.boolResponse.FromString,
                 _registered_method=True)
 
@@ -126,17 +126,17 @@ def add_GameServiceServicer_to_server(servicer, server):
             ),
             'verMao': grpc.unary_unary_rpc_method_handler(
                     servicer.verMao,
-                    request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-                    response_serializer=proto_dot_game__pb2.cartasResponse.SerializeToString,
+                    request_deserializer=proto_dot_game__pb2.StringRequest.FromString,
+                    response_serializer=proto_dot_game__pb2.CartasResponse.SerializeToString,
             ),
             'pegarCartaDeck': grpc.unary_unary_rpc_method_handler(
                     servicer.pegarCartaDeck,
-                    request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-                    response_serializer=proto_dot_game__pb2.cartasResponse.SerializeToString,
+                    request_deserializer=proto_dot_game__pb2.StringRequest.FromString,
+                    response_serializer=proto_dot_game__pb2.CartasResponse.SerializeToString,
             ),
             'desistirJogo': grpc.unary_unary_rpc_method_handler(
                     servicer.desistirJogo,
-                    request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                    request_deserializer=proto_dot_game__pb2.StringRequest.FromString,
                     response_serializer=proto_dot_game__pb2.boolResponse.SerializeToString,
             ),
     }
@@ -246,8 +246,8 @@ class GameService(object):
             request,
             target,
             '/GameService/verMao',
-            google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-            proto_dot_game__pb2.cartasResponse.FromString,
+            proto_dot_game__pb2.StringRequest.SerializeToString,
+            proto_dot_game__pb2.CartasResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -273,8 +273,8 @@ class GameService(object):
             request,
             target,
             '/GameService/pegarCartaDeck',
-            google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-            proto_dot_game__pb2.cartasResponse.FromString,
+            proto_dot_game__pb2.StringRequest.SerializeToString,
+            proto_dot_game__pb2.CartasResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -300,7 +300,7 @@ class GameService(object):
             request,
             target,
             '/GameService/desistirJogo',
-            google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            proto_dot_game__pb2.StringRequest.SerializeToString,
             proto_dot_game__pb2.boolResponse.FromString,
             options,
             channel_credentials,

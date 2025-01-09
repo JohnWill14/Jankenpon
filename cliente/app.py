@@ -30,6 +30,27 @@ class Requests():
             response = self.stub.acessarSala(salaRequest)
             print(f"Resposta do servidor: {response}")
 
+    def verMao(self, user):
+        with grpc.insecure_channel('127.0.0.1:50051', options=(('grpc.enable_http_proxy', 0), ('grpc.default_authority', 'localhost'))) as channel:
+            self.stub = game_pb2_grpc.GameServiceStub(channel)
+            stringRequest = game_pb2.StringRequest(string = user.chave)
+            response = self.stub.verMao(stringRequest)
+            print(f"Resposta do servidor: {response}")
+
+    def pegarCartaDeck(self, user):
+        with grpc.insecure_channel('127.0.0.1:50051', options=(('grpc.enable_http_proxy', 0), ('grpc.default_authority', 'localhost'))) as channel:
+            self.stub = game_pb2_grpc.GameServiceStub(channel)
+            stringRequest = game_pb2.StringRequest(string = user.chave)
+            response = self.stub.pegarCartaDeck(stringRequest)
+            print(f"Resposta do servidor: {response}")
+
+    def desistirJogo(self, user):
+        with grpc.insecure_channel('127.0.0.1:50051', options=(('grpc.enable_http_proxy', 0), ('grpc.default_authority', 'localhost'))) as channel:
+            self.stub = game_pb2_grpc.GameServiceStub(channel)
+            stringRequest = game_pb2.StringRequest(string = user.chave)
+            response = self.stub.desistirJogo(stringRequest)
+            print(f"Resposta do servidor: {response}")
+
 
 def show_banner():
     arquivo = "./resources/banner.txt"
@@ -57,5 +78,9 @@ if __name__ == '__main__':
     user = init()
     sala  = input("insira o nome da sala: ")
     requests.acessarSala(sala, user)
+    requests.verMao(user)
+    print("****")
+    requests.pegarCartaDeck(user)
+    requests.desistirJogo(user)
     requests.sayHello()
 

@@ -25,7 +25,7 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10proto/game.proto\x1a\x1bgoogle/protobuf/empty.proto\"\x1f\n\rStringRequest\x12\x0e\n\x06string\x18\x01 \x01(\t\"*\n\x0bSalaRequest\x12\r\n\x05token\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\"A\n\x0cSalaResponse\x12\x12\n\nfinalizada\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\x0c\n\x04\x65rro\x18\x03 \x01(\x08\" \n\x0e\x63\x61rtasResponse\x12\x0e\n\x06\x63\x61rtas\x18\x01 \x03(\t\".\n\x0f\x43lienteResponse\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05\x63have\x18\x02 \x01(\t\"\x1c\n\x0c\x62oolResponse\x12\x0c\n\x04resp\x18\x01 \x01(\x08\x32\xc8\x02\n\x0bGameService\x12\x32\n\x08sayHello\x12\x16.google.protobuf.Empty\x1a\x0e.StringRequest\x12\x34\n\x10\x63\x61\x64\x61strarCliente\x12\x0e.StringRequest\x1a\x10.ClienteResponse\x12*\n\x0b\x61\x63\x65ssarSala\x12\x0c.SalaRequest\x1a\r.SalaResponse\x12\x31\n\x06verMao\x12\x16.google.protobuf.Empty\x1a\x0f.cartasResponse\x12\x39\n\x0epegarCartaDeck\x12\x16.google.protobuf.Empty\x1a\x0f.cartasResponse\x12\x35\n\x0c\x64\x65sistirJogo\x12\x16.google.protobuf.Empty\x1a\r.boolResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10proto/game.proto\x1a\x1bgoogle/protobuf/empty.proto\"\x1f\n\rStringRequest\x12\x0e\n\x06string\x18\x01 \x01(\t\"*\n\x0bSalaRequest\x12\r\n\x05token\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\"A\n\x0cSalaResponse\x12\x12\n\nfinalizada\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\x0c\n\x04\x65rro\x18\x03 \x01(\x08\" \n\x0e\x43\x61rtasResponse\x12\x0e\n\x06\x63\x61rtas\x18\x01 \x03(\t\".\n\x0f\x43lienteResponse\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05\x63have\x18\x02 \x01(\t\"\x1c\n\x0c\x62oolResponse\x12\x0c\n\x04resp\x18\x01 \x01(\x08\x32\xb0\x02\n\x0bGameService\x12\x32\n\x08sayHello\x12\x16.google.protobuf.Empty\x1a\x0e.StringRequest\x12\x34\n\x10\x63\x61\x64\x61strarCliente\x12\x0e.StringRequest\x1a\x10.ClienteResponse\x12*\n\x0b\x61\x63\x65ssarSala\x12\x0c.SalaRequest\x1a\r.SalaResponse\x12)\n\x06verMao\x12\x0e.StringRequest\x1a\x0f.CartasResponse\x12\x31\n\x0epegarCartaDeck\x12\x0e.StringRequest\x1a\x0f.CartasResponse\x12-\n\x0c\x64\x65sistirJogo\x12\x0e.StringRequest\x1a\r.boolResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -45,5 +45,5 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_BOOLRESPONSE']._serialized_start=275
   _globals['_BOOLRESPONSE']._serialized_end=303
   _globals['_GAMESERVICE']._serialized_start=306
-  _globals['_GAMESERVICE']._serialized_end=634
+  _globals['_GAMESERVICE']._serialized_end=610
 # @@protoc_insertion_point(module_scope)

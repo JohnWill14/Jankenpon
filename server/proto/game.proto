@@ -7,9 +7,9 @@ service GameService {
   rpc sayHello (google.protobuf.Empty) returns (StringRequest);
   rpc cadastrarCliente (StringRequest) returns (ClienteResponse);
   rpc acessarSala (SalaRequest) returns (SalaResponse);
-  rpc verMao (google.protobuf.Empty) returns (cartasResponse);
-  rpc pegarCartaDeck (google.protobuf.Empty) returns (cartasResponse);
-  rpc desistirJogo (google.protobuf.Empty) returns (boolResponse);
+  rpc verMao (StringRequest) returns (CartasResponse);
+  rpc pegarCartaDeck (StringRequest) returns (CartasResponse);
+  rpc desistirJogo (StringRequest) returns (boolResponse);
 }
 
 
@@ -29,7 +29,7 @@ message SalaResponse {
   bool erro = 3;
 }
 
-message cartasResponse {
+message CartasResponse {
   repeated string cartas = 1;
 }
 

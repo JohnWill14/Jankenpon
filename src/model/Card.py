@@ -43,3 +43,6 @@ class Card:
                 if tuple[1] == self.attack:
                     tuple_selected = tuple
                     return Result(attak_opponent, tuple_selected, False)
+
+    def __str__(self):
+        return str(self.attack)
