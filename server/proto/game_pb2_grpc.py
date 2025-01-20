@@ -55,6 +55,11 @@ class GameServiceStub(object):
                 request_serializer=proto_dot_game__pb2.StringRequest.SerializeToString,
                 response_deserializer=proto_dot_game__pb2.CartasResponse.FromString,
                 _registered_method=True)
+        self.jogar = channel.unary_unary(
+                '/GameService/jogar',
+                request_serializer=proto_dot_game__pb2.JogarRequest.SerializeToString,
+                response_deserializer=proto_dot_game__pb2.JogarResponse.FromString,
+                _registered_method=True)
         self.pegarCartaDeck = channel.unary_unary(
                 '/GameService/pegarCartaDeck',
                 request_serializer=proto_dot_game__pb2.StringRequest.SerializeToString,
@@ -62,6 +67,11 @@ class GameServiceStub(object):
                 _registered_method=True)
         self.desistirJogo = channel.unary_unary(
                 '/GameService/desistirJogo',
+                request_serializer=proto_dot_game__pb2.StringRequest.SerializeToString,
+                response_deserializer=proto_dot_game__pb2.boolResponse.FromString,
+                _registered_method=True)
+        self.clean_duelo = channel.unary_unary(
+                '/GameService/clean_duelo',
                 request_serializer=proto_dot_game__pb2.StringRequest.SerializeToString,
                 response_deserializer=proto_dot_game__pb2.boolResponse.FromString,
                 _registered_method=True)
@@ -94,6 +104,12 @@ class GameServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def jogar(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def pegarCartaDeck(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -101,6 +117,12 @@ class GameServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def desistirJogo(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def clean_duelo(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -129,6 +151,11 @@ def add_GameServiceServicer_to_server(servicer, server):
                     request_deserializer=proto_dot_game__pb2.StringRequest.FromString,
                     response_serializer=proto_dot_game__pb2.CartasResponse.SerializeToString,
             ),
+            'jogar': grpc.unary_unary_rpc_method_handler(
+                    servicer.jogar,
+                    request_deserializer=proto_dot_game__pb2.JogarRequest.FromString,
+                    response_serializer=proto_dot_game__pb2.JogarResponse.SerializeToString,
+            ),
             'pegarCartaDeck': grpc.unary_unary_rpc_method_handler(
                     servicer.pegarCartaDeck,
                     request_deserializer=proto_dot_game__pb2.StringRequest.FromString,
@@ -136,6 +163,11 @@ def add_GameServiceServicer_to_server(servicer, server):
             ),
             'desistirJogo': grpc.unary_unary_rpc_method_handler(
                     servicer.desistirJogo,
+                    request_deserializer=proto_dot_game__pb2.StringRequest.FromString,
+                    response_serializer=proto_dot_game__pb2.boolResponse.SerializeToString,
+            ),
+            'clean_duelo': grpc.unary_unary_rpc_method_handler(
+                    servicer.clean_duelo,
                     request_deserializer=proto_dot_game__pb2.StringRequest.FromString,
                     response_serializer=proto_dot_game__pb2.boolResponse.SerializeToString,
             ),
@@ -259,6 +291,33 @@ class GameService(object):
             _registered_method=True)
 
     @staticmethod
+    def jogar(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/GameService/jogar',
+            proto_dot_game__pb2.JogarRequest.SerializeToString,
+            proto_dot_game__pb2.JogarResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def pegarCartaDeck(request,
             target,
             options=(),
@@ -300,6 +359,33 @@ class GameService(object):
             request,
             target,
             '/GameService/desistirJogo',
+            proto_dot_game__pb2.StringRequest.SerializeToString,
+            proto_dot_game__pb2.boolResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def clean_duelo(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/GameService/clean_duelo',
             proto_dot_game__pb2.StringRequest.SerializeToString,
             proto_dot_game__pb2.boolResponse.FromString,
             options,

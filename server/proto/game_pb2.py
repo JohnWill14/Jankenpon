@@ -25,7 +25,7 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10proto/game.proto\x1a\x1bgoogle/protobuf/empty.proto\"\x1f\n\rStringRequest\x12\x0e\n\x06string\x18\x01 \x01(\t\"*\n\x0bSalaRequest\x12\r\n\x05token\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\"A\n\x0cSalaResponse\x12\x12\n\nfinalizada\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\x0c\n\x04\x65rro\x18\x03 \x01(\x08\" \n\x0e\x43\x61rtasResponse\x12\x0e\n\x06\x63\x61rtas\x18\x01 \x03(\t\".\n\x0f\x43lienteResponse\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05\x63have\x18\x02 \x01(\t\"\x1c\n\x0c\x62oolResponse\x12\x0c\n\x04resp\x18\x01 \x01(\x08\x32\xb0\x02\n\x0bGameService\x12\x32\n\x08sayHello\x12\x16.google.protobuf.Empty\x1a\x0e.StringRequest\x12\x34\n\x10\x63\x61\x64\x61strarCliente\x12\x0e.StringRequest\x1a\x10.ClienteResponse\x12*\n\x0b\x61\x63\x65ssarSala\x12\x0c.SalaRequest\x1a\r.SalaResponse\x12)\n\x06verMao\x12\x0e.StringRequest\x1a\x0f.CartasResponse\x12\x31\n\x0epegarCartaDeck\x12\x0e.StringRequest\x1a\x0f.CartasResponse\x12-\n\x0c\x64\x65sistirJogo\x12\x0e.StringRequest\x1a\r.boolResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10proto/game.proto\x1a\x1bgoogle/protobuf/empty.proto\"\x1f\n\rStringRequest\x12\x0e\n\x06string\x18\x01 \x01(\t\"+\n\x0cJogarRequest\x12\x0b\n\x03idx\x18\x01 \x01(\x05\x12\x0e\n\x06string\x18\x02 \x01(\t\"=\n\rJogarResponse\x12\r\n\x05tuple\x18\x01 \x01(\t\x12\x0f\n\x07victory\x18\x02 \x01(\x08\x12\x0c\n\x04\x64raw\x18\x03 \x01(\x08\"*\n\x0bSalaRequest\x12\r\n\x05token\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\"S\n\x0cSalaResponse\x12\x12\n\nfinalizada\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\x0c\n\x04\x65rro\x18\x03 \x01(\x08\x12\x10\n\x08oponente\x18\x04 \x01(\t\" \n\x0e\x43\x61rtasResponse\x12\x0e\n\x06\x63\x61rtas\x18\x01 \x03(\t\".\n\x0f\x43lienteResponse\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05\x63have\x18\x02 \x01(\t\"\x1c\n\x0c\x62oolResponse\x12\x0c\n\x04resp\x18\x01 \x01(\x08\x32\x86\x03\n\x0bGameService\x12\x32\n\x08sayHello\x12\x16.google.protobuf.Empty\x1a\x0e.StringRequest\x12\x34\n\x10\x63\x61\x64\x61strarCliente\x12\x0e.StringRequest\x1a\x10.ClienteResponse\x12*\n\x0b\x61\x63\x65ssarSala\x12\x0c.SalaRequest\x1a\r.SalaResponse\x12)\n\x06verMao\x12\x0e.StringRequest\x1a\x0f.CartasResponse\x12&\n\x05jogar\x12\r.JogarRequest\x1a\x0e.JogarResponse\x12\x31\n\x0epegarCartaDeck\x12\x0e.StringRequest\x1a\x0f.CartasResponse\x12-\n\x0c\x64\x65sistirJogo\x12\x0e.StringRequest\x1a\r.boolResponse\x12,\n\x0b\x63lean_duelo\x12\x0e.StringRequest\x1a\r.boolResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -34,16 +34,20 @@ if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
   _globals['_STRINGREQUEST']._serialized_start=49
   _globals['_STRINGREQUEST']._serialized_end=80
-  _globals['_SALAREQUEST']._serialized_start=82
-  _globals['_SALAREQUEST']._serialized_end=124
-  _globals['_SALARESPONSE']._serialized_start=126
-  _globals['_SALARESPONSE']._serialized_end=191
-  _globals['_CARTASRESPONSE']._serialized_start=193
-  _globals['_CARTASRESPONSE']._serialized_end=225
-  _globals['_CLIENTERESPONSE']._serialized_start=227
-  _globals['_CLIENTERESPONSE']._serialized_end=273
-  _globals['_BOOLRESPONSE']._serialized_start=275
-  _globals['_BOOLRESPONSE']._serialized_end=303
-  _globals['_GAMESERVICE']._serialized_start=306
-  _globals['_GAMESERVICE']._serialized_end=610
+  _globals['_JOGARREQUEST']._serialized_start=82
+  _globals['_JOGARREQUEST']._serialized_end=125
+  _globals['_JOGARRESPONSE']._serialized_start=127
+  _globals['_JOGARRESPONSE']._serialized_end=188
+  _globals['_SALAREQUEST']._serialized_start=190
+  _globals['_SALAREQUEST']._serialized_end=232
+  _globals['_SALARESPONSE']._serialized_start=234
+  _globals['_SALARESPONSE']._serialized_end=317
+  _globals['_CARTASRESPONSE']._serialized_start=319
+  _globals['_CARTASRESPONSE']._serialized_end=351
+  _globals['_CLIENTERESPONSE']._serialized_start=353
+  _globals['_CLIENTERESPONSE']._serialized_end=399
+  _globals['_BOOLRESPONSE']._serialized_start=401
+  _globals['_BOOLRESPONSE']._serialized_end=429
+  _globals['_GAMESERVICE']._serialized_start=432
+  _globals['_GAMESERVICE']._serialized_end=822
 # @@protoc_insertion_point(module_scope)

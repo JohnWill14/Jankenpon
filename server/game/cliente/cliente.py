@@ -14,8 +14,17 @@ class Cliente:
         self.deck = self.deck[handle:]
 
     def get_card(self):
+        if len(self.deck) == 0:
+            return None
         card = self.deck.pop()
         self.top_deck.append(card)
+        return card
+
+    def joga_carta(self, idx):
+        if(len(self.top_deck)== 0):
+            return None
+        card = self.top_deck[idx]
+        del self.top_deck[idx]
         return card
 
     def is_deck_And_handle_empty(self):

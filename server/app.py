@@ -1,5 +1,6 @@
 from concurrent import futures
-
+import signal
+import sys
 import grpc
 import proto.game_pb2_grpc as game_pb2_grpc
 import  proto.game_pb2 as game_pb2
@@ -18,6 +19,7 @@ class gameSettins():
     def __init__(self, cards_total = 20):
         self.clients = []
         self.rooms = {}
+        self.duelos = {}
         self.cards_total = cards_total
 
     def find_user_by_token(self, token):
@@ -29,6 +31,13 @@ class gameSettins():
     def find_room_by_name(self, name):
         if name in self.rooms:
             return self.rooms[name]
+        return None
+
+    def find_room_by_cliente(self, cliente):
+        for room_name, clients in self.rooms.items():
+            for c in clients:
+                if c.chave == cliente.chave:
+                    return room_name
         return None
 
     def addClient(self, name):
@@ -48,6 +57,8 @@ class gameSettins():
                     self.rooms[name].append(c)
                 else:
                     raise ValueError("Room is closed")
+            else:
+                return
         else:
             self.rooms[name] = [c]
 
@@ -58,10 +69,17 @@ class gameSettins():
         if c == None:
             raise ValueError("User not found")
         logging.info(f"Cliente {c.nome} viu sua mao")
+
+        for chave, lista in self.rooms.items():
+            if c in lista:
+                if len(lista) < 2:
+                    return []
+                break
         return c.top_deck
 
     def getCarta(self, token):
         c = self.find_user_by_token(token)
+        print("hello"+token)
         if c == None:
             raise ValueError("User not found")
         c.get_card()
@@ -77,7 +95,35 @@ class gameSettins():
             if c in lista:
                 lista.remove(c)
                 break
-        logging.info(f"Cliente {c.nome} desistiu do jogo")
+        logging.info(f"Cliente {c.nome} saiu do jogo")
+
+    def jogar(self, token, idx):
+        c = self.find_user_by_token(token)
+        if c == None:
+            raise ValueError("User not found")
+        carta = c.joga_carta(idx)
+        if carta == None:
+            self.desistirJogo(token)
+            return None
+        room = self.find_room_by_cliente(c)
+        if room in self.duelos:
+            self.duelos[room].append(carta)
+        else:
+            self.duelos[room] = [carta]
+
+        while len(self.duelos[room]) < 2:
+            pass
+
+        cp = self.duelos[room].copy()
+        cp.remove(carta)
+
+        c1 = cp[0]
+
+        return carta.attack_outher_card(c1)
+
+    def clean_duelos(self, room_name):
+        if len( self.duelos[room_name]) ==2:
+            self.duelos[room_name] = []
 
 class GameServiceServicer(game_pb2_grpc.GameServiceServicer):
     def __init__(self, gameSettins):
@@ -104,7 +150,19 @@ class GameServiceServicer(game_pb2_grpc.GameServiceServicer):
         completed = len(room) == 2
         message = "OK" if completed else "Wait pls"
 
-        return game_pb2.SalaResponse(finalizada=completed, message = message, erro=False)
+        opoString = None
+        if(completed):
+            c = self.game.find_user_by_token(request.token)
+            opo = None
+
+            if room[0].chave == request.token:
+                opo = room[1]
+            else:
+                opo = room[0]
+
+            if(opo != None):
+                opoString = opo.nome
+        return game_pb2.SalaResponse(finalizada=completed, message = message, erro=False, oponente= opoString )
 
     def verMao(self, request, context):
             cards = self.game.verMao(request.string)
@@ -121,11 +179,33 @@ class GameServiceServicer(game_pb2_grpc.GameServiceServicer):
             return game_pb2.boolResponse(resp=False)
         return game_pb2.boolResponse(resp=True)
 
+    def jogar(self, request, context):
+        rsesp = self.game.jogar(request.string, request.idx)
+        if(rsesp == None):
+            return game_pb2.JogarResponse(tuple="sem mais cartas =(", victory = False, draw = False)
+        return game_pb2.JogarResponse(tuple=str(rsesp), victory = rsesp.is_victory(), draw = rsesp.is_draw())
+
+    def clean_duelo(self, request, context):
+        self.game.clean_duelos(request.string)
+        return game_pb2.boolResponse(resp=True)
+
+
+def signal_handler(sig, frame):
+    """Lidar com a interrupção do servidor"""
+    print("\nRecebido sinal de interrupção (Ctrl+Z ou Ctrl+C). Finalizando servidor...")
+    server.stop(0)  # Interrompe o servidor
+    sys.exit(0)  # Finaliza o processo
 
 def serve(game):
+    global server
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     game_pb2_grpc.add_GameServiceServicer_to_server(GameServiceServicer(game), server)
     server.add_insecure_port('127.0.0.1:50051')
+
+    # Configurar o sinal de interrupção (Ctrl+Z ou Ctrl+C)
+    signal.signal(signal.SIGINT, signal_handler)  # Captura Ctrl+C
+    signal.signal(signal.SIGTSTP, signal_handler)  # Captura Ctrl+Z
+
     logging.info("Servidor rodando na porta 50051...")
     server.start()
     server.wait_for_termination()

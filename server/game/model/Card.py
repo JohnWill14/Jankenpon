@@ -12,6 +12,11 @@ class Result:
     def is_victory(self):
         return self.victory
 
+    def __str__(self):
+        if self.tuple != None and len(self.tuple) == 2:
+            return str(self.attack) + " "+str(self.tuple[0]) + " "+str(self.tuple[1])
+        return str(self.attack)
+
 class Card:
     def __init__(self, type):
         if isinstance(type, Attack):
@@ -32,7 +37,7 @@ class Card:
         opponent = False
         tuple_selected = None
         for tuple in relationship[self.attack.value]:
-            if tuple[1] == attak_opponent:
+            if tuple[1].value == attak_opponent.value:
                 tuple_selected = tuple
                 opponent = True
 
@@ -40,7 +45,7 @@ class Card:
             return Result(self.attack, tuple_selected, True)
         else:
             for tuple in relationship[attak_opponent.value]:
-                if tuple[1] == self.attack:
+                if tuple[1].value == self.attack.value:
                     tuple_selected = tuple
                     return Result(attak_opponent, tuple_selected, False)
     def __str__(self):

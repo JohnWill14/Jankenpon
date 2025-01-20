@@ -8,14 +8,28 @@ service GameService {
   rpc cadastrarCliente (StringRequest) returns (ClienteResponse);
   rpc acessarSala (SalaRequest) returns (SalaResponse);
   rpc verMao (StringRequest) returns (CartasResponse);
+  rpc jogar (JogarRequest) returns (JogarResponse);
   rpc pegarCartaDeck (StringRequest) returns (CartasResponse);
   rpc desistirJogo (StringRequest) returns (boolResponse);
+  rpc clean_duelo (StringRequest) returns (boolResponse);
 }
 
 
 message StringRequest {
   string string = 1;
 }
+
+message JogarRequest {
+  int32 idx = 1;
+  string string = 2;
+}
+
+message JogarResponse {
+  string tuple = 1;
+  bool victory = 2;
+  bool draw = 3;
+}
+
 
 message SalaRequest {
   string token = 1;
@@ -27,6 +41,7 @@ message SalaResponse {
   bool finalizada = 1;
   string message = 2;
   bool erro = 3;
+  string oponente = 4;
 }
 
 message CartasResponse {
