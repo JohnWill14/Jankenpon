@@ -89,10 +89,18 @@ def check_final():
         else:
             print(f"vc empatou {oponente} :o ")
         requests.desistirJogo(user)
+        return True
+    return False
 
 def show_menu(user):
-    while(True):
-        print(f"USER {user.name}")
+    global ganhou
+    global perdeu
+    global acabou
+    acabou = False
+    cartas = requests.verMao(user)
+    user.cartas = len(cartas)
+    while(not acabou):
+        print(f"USER {user.name}: vitorias => {ganhou} derrotas => {perdeu}")
         print("1- ver mao")
         print("2- pegar carta do deck")
         print("3- sair jogo")
@@ -102,7 +110,7 @@ def show_menu(user):
             cartas = requests.verMao(user)
             user.cartas = len(cartas)
 
-            check_final()
+            acabou = check_final()
 
             for i, carta in enumerate(cartas):
                 print(f"{i}. {carta}")
@@ -113,13 +121,14 @@ def show_menu(user):
             if op == len(cartas):
                 continue
 
+            print("espere...")
             resp =  requests.jogar(user, op)
+
             if(resp == None):
                 continue
             print(resp.tuple)
             user.cartas = user.cartas - 1
-            global ganhou
-            global perdeu
+
 
             if resp.draw:
                 print("EMPATE")
@@ -130,17 +139,19 @@ def show_menu(user):
                 print(f"voce perdeu essa rodada. {oponente} ganhou !!!")
                 perdeu = perdeu + 1
             requests.clean_duelo(sala)
-            check_final()
+            acabou = check_final()
 
         elif item == 2:
             if user.cartas > 0:
                 requests.pegarCartaDeck(user)
                 user.cartas = user.cartas + 1
             else:
-                check_final()
+                acabou = check_final()
         elif item == 3:
             requests.desistirJogo(user)
             user.cartas = 0
+            acabou = True
+            print("bye")
             break
     return None
 
@@ -164,6 +175,7 @@ if __name__ == '__main__':
     while True:
         global sala
         sala  = input("insira o nome da sala: ")
+        print("espere...")
 
         sala_fechada = None
 
