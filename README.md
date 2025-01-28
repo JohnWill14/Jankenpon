@@ -1,3 +1,8 @@
+# Autores
+
+  * Gabriel Valentim De Oliveira Dacie
+  * John William Vicente 
+
 # Run
 
 ```bash
