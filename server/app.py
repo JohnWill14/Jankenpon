@@ -79,7 +79,6 @@ class gameSettins():
 
     def getCarta(self, token):
         c = self.find_user_by_token(token)
-        print("hello"+token)
         if c == None:
             raise ValueError("User not found")
         c.get_card()
