@@ -195,17 +195,17 @@ def signal_handler(sig, frame):
     server.stop(0)  # Interrompe o servidor
     sys.exit(0)  # Finaliza o processo
 
-def serve(game):
+def serve(gam, end, porta):
     global server
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     game_pb2_grpc.add_GameServiceServicer_to_server(GameServiceServicer(game), server)
-    server.add_insecure_port('127.0.0.1:50051')
+    server.add_insecure_port(f'{end}:{porta}')
 
     # Configurar o sinal de interrupção (Ctrl+Z ou Ctrl+C)
     signal.signal(signal.SIGINT, signal_handler)  # Captura Ctrl+C
     signal.signal(signal.SIGTSTP, signal_handler)  # Captura Ctrl+Z
 
-    logging.info("Servidor rodando na porta 50051...")
+    logging.info(f"Servidor rodando em {end}:{porta}...")
     server.start()
     server.wait_for_termination()
 
@@ -229,5 +229,14 @@ def init():
     return gameSettins()
 
 if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        end = '127.0.0.1'
+    else:
+        end = sys.argv[1]
+    if len(sys.argv) < 3:
+        porta = 50051
+    else:
+        porta = int(sys.argv[2])
+
     game = init()
-    serve(game)
+    serve(game, end, porta)

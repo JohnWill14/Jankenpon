@@ -2,23 +2,26 @@ import grpc
 import proto.game_pb2_grpc as game_pb2_grpc
 import  proto.game_pb2 as game_pb2
 from user.User import User
+import sys
 
 ganhou = 0
 perdeu = 0
 oponente = None
 class Requests():
-    def __init__(self):
+    def __init__(self, end, porta):
         self.empty = game_pb2.google_dot_protobuf_dot_empty__pb2.Empty()
 
+    def get_target(self):
+        return f"{end}:{porta}"
 
     def sayHello(self):
-        with grpc.insecure_channel('127.0.0.1:50051', options=(('grpc.enable_http_proxy', 0), ('grpc.default_authority', 'localhost'))) as channel:
+        with grpc.insecure_channel(self.get_target(), options=(('grpc.enable_http_proxy', 0), ('grpc.default_authority', 'localhost'))) as channel:
             self.stub = game_pb2_grpc.GameServiceStub(channel)
             response = self.stub.sayHello(self.empty)
             print(f"Resposta do servidor: {response.string}")
 
     def cadastrarCliente(self, name):
-        with grpc.insecure_channel('127.0.0.1:50051', options=(('grpc.enable_http_proxy', 0), ('grpc.default_authority', 'localhost'))) as channel:
+        with grpc.insecure_channel(self.get_target(), options=(('grpc.enable_http_proxy', 0), ('grpc.default_authority', 'localhost'))) as channel:
             self.stub = game_pb2_grpc.GameServiceStub(channel)
             stringRequest = game_pb2.StringRequest(string=name)
             response = self.stub.cadastrarCliente(stringRequest)
@@ -27,26 +30,26 @@ class Requests():
             return user
 
     def acessarSala(self, name, user):
-        with grpc.insecure_channel('127.0.0.1:50051', options=(('grpc.enable_http_proxy', 0), ('grpc.default_authority', 'localhost'))) as channel:
+        with grpc.insecure_channel(self.get_target(), options=(('grpc.enable_http_proxy', 0), ('grpc.default_authority', 'localhost'))) as channel:
             self.stub = game_pb2_grpc.GameServiceStub(channel)
             salaRequest = game_pb2.SalaRequest(name = name,token = user.chave)
             return self.stub.acessarSala(salaRequest)
 
     def verMao(self, user):
-        with grpc.insecure_channel('127.0.0.1:50051', options=(('grpc.enable_http_proxy', 0), ('grpc.default_authority', 'localhost'))) as channel:
+        with grpc.insecure_channel(self.get_target(), options=(('grpc.enable_http_proxy', 0), ('grpc.default_authority', 'localhost'))) as channel:
             self.stub = game_pb2_grpc.GameServiceStub(channel)
             stringRequest = game_pb2.StringRequest(string = user.chave)
             return self.stub.verMao(stringRequest).cartas
 
     def pegarCartaDeck(self, user):
-        with grpc.insecure_channel('127.0.0.1:50051', options=(('grpc.enable_http_proxy', 0), ('grpc.default_authority', 'localhost'))) as channel:
+        with grpc.insecure_channel(self.get_target(), options=(('grpc.enable_http_proxy', 0), ('grpc.default_authority', 'localhost'))) as channel:
             self.stub = game_pb2_grpc.GameServiceStub(channel)
             stringRequest = game_pb2.StringRequest(string = user.chave)
             response = self.stub.pegarCartaDeck(stringRequest)
             print(f"voce pegou a carta: {response.cartas[len(response.cartas)-1]}")
 
     def jogar(self, user, idx):
-        with grpc.insecure_channel('127.0.0.1:50051', options=(('grpc.enable_http_proxy', 0), ('grpc.default_authority', 'localhost'))) as channel:
+        with grpc.insecure_channel(self.get_target(), options=(('grpc.enable_http_proxy', 0), ('grpc.default_authority', 'localhost'))) as channel:
             if(idx > user.cartas or idx < 0):
                 print("index errado")
                 return
@@ -55,13 +58,13 @@ class Requests():
             return self.stub.jogar(stringRequest)
 
     def clean_duelo(self, sala):
-        with grpc.insecure_channel('127.0.0.1:50051', options=(('grpc.enable_http_proxy', 0), ('grpc.default_authority', 'localhost'))) as channel:
+        with grpc.insecure_channel(self.get_target(), options=(('grpc.enable_http_proxy', 0), ('grpc.default_authority', 'localhost'))) as channel:
             self.stub = game_pb2_grpc.GameServiceStub(channel)
             stringRequest = game_pb2.StringRequest(string = sala)
             return self.stub.clean_duelo(stringRequest)
 
     def desistirJogo(self, user):
-        with grpc.insecure_channel('127.0.0.1:50051', options=(('grpc.enable_http_proxy', 0), ('grpc.default_authority', 'localhost'))) as channel:
+        with grpc.insecure_channel(self.get_target(), options=(('grpc.enable_http_proxy', 0), ('grpc.default_authority', 'localhost'))) as channel:
             self.stub = game_pb2_grpc.GameServiceStub(channel)
             stringRequest = game_pb2.StringRequest(string = user.chave)
             response = self.stub.desistirJogo(stringRequest)
@@ -156,20 +159,28 @@ def show_menu(user):
     return None
 
 
-def init():
+def init(end, porta):
     show_banner()
+    global requests
+    requests = Requests(end, porta)
     print("*** Cadastro de usuario ***")
     name = input("Insira o nome do usuario: ")
     return requests.cadastrarCliente(name)
 
 
-requests = Requests()
 
 
 if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        end = '127.0.0.1'
+    else:
+        end = sys.argv[1]
+    if len(sys.argv) < 3:
+        porta = 50051
+    else:
+        porta = int(sys.argv[2])
 
-
-    user = init()
+    user = init(end, porta)
     requests.sayHello()
 
     while True:
